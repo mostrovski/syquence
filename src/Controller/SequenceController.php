@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Services\SequenceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,34 +16,34 @@ class SequenceController extends AbstractController
             'data' => [
                 'arithmetic' => [
                     'id' => 'arithmetic',
-                    'title' => 'Arithmetic',
+                    'title' => 'Arithmetic progression',
                 ],
                 'geometric' => [
                     'id' => 'geometric',
-                    'title' => 'Geometric',
+                    'title' => 'Geometric progression',
                 ],
                 'fibonacci' => [
                     'id' => 'fibonacci',
-                    'title' => 'Fibonacci',
+                    'title' => 'Fibonacci sequence',
                 ],
             ],
         ]);
     }
 
     #[Route('/api/sequences/{id}', name: 'api_sequence_show', methods: 'GET')]
-    public function show(string $id): JsonResponse
+    public function show(string $id, SequenceService $sequence): JsonResponse
     {
-        $sequence = match ($id) {
-            'arithmetic' => [1, 2, 3, 4, 5],
-            'geometric' => [100, 50, 25, 12.5, 6.25],
-            'fibonacci' => [0, 1, 1, 2, 3, 5, 8, 13, 21, 34],
+        $result = match ($id) {
+            'arithmetic' => $sequence->arithmetic(start: 1, increment: 1, size: 5),
+            'geometric' => $sequence->geometric(start: 100, ratio: 0.5, size: 5),
+            'fibonacci' => $sequence->fibonacci(size: 10),
             default => null,
         };
 
-        if ($sequence === null) {
+        if ($result === null) {
             return $this->json(['error' => 'Sequence not found'], 404);
         }
 
-        return $this->json(['data' => $sequence]);
+        return $this->json(['data' => $result]);
     }
 }
