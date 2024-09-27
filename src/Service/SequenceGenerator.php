@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Service;
 
-class SequenceService
+class SequenceGenerator
 {
     public function arithmetic(int|float $start, int|float $increment, int $size): array
     {

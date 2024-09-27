@@ -2,48 +2,67 @@
 
 namespace App\Controller;
 
-use App\Services\SequenceService;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Enumeration\Sequence;
+use App\Service\SequenceGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
-class SequenceController extends AbstractController
+#[Route('api/sequences', name: 'api_sequences_')]
+class SequenceController extends AbstractApiController
 {
-    #[Route('/api/sequences', name: 'api_sequence', methods: 'GET')]
+    #[Route(name: 'index', methods: 'GET')]
     public function index(): JsonResponse
     {
-        return $this->json([
-            'data' => [
-                'arithmetic' => [
-                    'id' => 'arithmetic',
-                    'title' => 'Arithmetic progression',
-                ],
-                'geometric' => [
-                    'id' => 'geometric',
-                    'title' => 'Geometric progression',
-                ],
-                'fibonacci' => [
-                    'id' => 'fibonacci',
-                    'title' => 'Fibonacci sequence',
-                ],
-            ],
-        ]);
-    }
+        $data = [];
 
-    #[Route('/api/sequences/{id}', name: 'api_sequence_show', methods: 'GET')]
-    public function show(string $id, SequenceService $sequence): JsonResponse
-    {
-        $result = match ($id) {
-            'arithmetic' => $sequence->arithmetic(start: 1, increment: 1, size: 5),
-            'geometric' => $sequence->geometric(start: 100, ratio: 0.5, size: 5),
-            'fibonacci' => $sequence->fibonacci(size: 10),
-            default => null,
-        };
-
-        if ($result === null) {
-            return $this->json(['error' => 'Sequence not found'], 404);
+        foreach (Sequence::cases() as $sequence) {
+            $data[$sequence->value] = [
+                'id' => $sequence->getId(),
+                'title' => $sequence->getTitle(),
+            ];
         }
 
-        return $this->json(['data' => $result]);
+        return $this->json(['data' => $data]);
+    }
+
+    #[Route('/{id}', name: 'show', methods: 'GET')]
+    public function show(string $id, Request $request, SequenceGenerator $generate): JsonResponse
+    {
+        try {
+            $sequence = Sequence::from($id);
+        } catch (Throwable) {
+            return $this->json(
+                ['error' => 'Sequence not found.'],
+                status: Response::HTTP_NOT_FOUND,
+            );
+        }
+
+        $errors = $this->validator->validate($sequence->mapData($request));
+
+        if (count($errors) > 0) {
+            return $this->json(
+                ['error' => $this->transformErrors($errors)],
+                status: Response::HTTP_PRECONDITION_FAILED,
+            );
+        }
+
+        return $this->json([
+            'data' => match ($sequence) {
+                Sequence::Arithmetic => $generate->arithmetic(
+                    (float) $request->get('start'),
+                    (float) $request->get('increment'),
+                    (int) $request->get('size'),
+                ),
+                Sequence::Geometric => $generate->geometric(
+                    (float) $request->get('start'),
+                    (float) $request->get('ratio'),
+                    (int) $request->get('size'),
+                ),
+                Sequence::Fibonacci => $generate->fibonacci((int) $request->get('size')),
+            },
+        ]);
     }
 }

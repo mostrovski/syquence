@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-use App\Services\SequenceService;
+use App\Service\SequenceGenerator;
 use PHPUnit\Framework\TestCase;
 
 final class SequenceServiceTest extends TestCase
 {
-    protected SequenceService $sequence;
+    protected SequenceGenerator $sequence;
 
     protected function setUp(): void
     {
-        $this->sequence = new SequenceService;
+        $this->sequence = new SequenceGenerator;
     }
 
     public function test_it_generates_arithmetic_sequences(): void
