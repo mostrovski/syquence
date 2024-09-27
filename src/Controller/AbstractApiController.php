@@ -12,6 +12,9 @@ abstract class AbstractApiController extends AbstractController
         protected ValidatorInterface $validator,
     ) {}
 
+    /**
+     * @return array<string,string>
+     */
     protected function transformErrors(ConstraintViolationList $errors): array
     {
         $result = [];

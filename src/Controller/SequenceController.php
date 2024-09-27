@@ -40,28 +40,29 @@ class SequenceController extends AbstractApiController
             );
         }
 
-        $errors = $this->validator->validate($sequence->mapData($request));
+        $payload = $request->getPayload();
+        $errors = $this->validator->validate($sequence->mapData($payload));
 
         if (count($errors) > 0) {
             return $this->json(
                 ['error' => $this->transformErrors($errors)],
-                status: Response::HTTP_PRECONDITION_FAILED,
+                status: Response::HTTP_UNPROCESSABLE_ENTITY,
             );
         }
 
         return $this->json([
             'data' => match ($sequence) {
                 Sequence::Arithmetic => $generate->arithmetic(
-                    (float) $request->get('start'),
-                    (float) $request->get('increment'),
-                    (int) $request->get('size'),
+                    (float) $payload->get('start'),
+                    (float) $payload->get('increment'),
+                    (int) $payload->get('size'),
                 ),
                 Sequence::Geometric => $generate->geometric(
-                    (float) $request->get('start'),
-                    (float) $request->get('ratio'),
-                    (int) $request->get('size'),
+                    (float) $payload->get('start'),
+                    (float) $payload->get('ratio'),
+                    (int) $payload->get('size'),
                 ),
-                Sequence::Fibonacci => $generate->fibonacci((int) $request->get('size')),
+                Sequence::Fibonacci => $generate->fibonacci((int) $payload->get('size')),
             },
         ]);
     }

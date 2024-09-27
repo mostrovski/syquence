@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 abstract class AbstractSequence
 {
-    #[Type('digit', message: 'The size should be a positive integer.')]
+    #[Type('int')]
     #[NotNull]
     protected mixed $size = null;
 

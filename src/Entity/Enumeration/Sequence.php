@@ -6,7 +6,7 @@ use App\Entity\Value\AbstractSequence;
 use App\Entity\Value\ArithmeticSequence;
 use App\Entity\Value\FibonacciSequence;
 use App\Entity\Value\GeometricSequence;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\InputBag;
 
 enum Sequence: string
 {
@@ -32,19 +32,19 @@ enum Sequence: string
         };
     }
 
-    public function mapData(Request $request): AbstractSequence
+    public function mapData(InputBag $payload): AbstractSequence
     {
         return match ($this) {
             self::Arithmetic => (new ArithmeticSequence)
-                ->setStart($request->get('start'))
-                ->setIncrement($request->get('increment'))
-                ->setSize($request->get('size')),
+                ->setStart($payload->get('start'))
+                ->setIncrement($payload->get('increment'))
+                ->setSize($payload->get('size')),
             self::Geometric => (new GeometricSequence)
-                ->setStart($request->get('start'))
-                ->setRatio($request->get('ratio'))
-                ->setSize($request->get('size')),
+                ->setStart($payload->get('start'))
+                ->setRatio($payload->get('ratio'))
+                ->setSize($payload->get('size')),
             self::Fibonacci => (new FibonacciSequence)
-                ->setSize($request->get('size')),
+                ->setSize($payload->get('size')),
         };
     }
 }

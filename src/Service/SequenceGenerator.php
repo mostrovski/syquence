@@ -4,6 +4,9 @@ namespace App\Service;
 
 class SequenceGenerator
 {
+    /**
+     * @return array<int, int|float>
+     */
     public function arithmetic(int|float $start, int|float $increment, int $size): array
     {
         if ($size <= 0) {
@@ -13,6 +16,9 @@ class SequenceGenerator
         return range(start: $start, end: $start + $increment * ($size - 1), step: $increment);
     }
 
+    /**
+     * @return array<int, int|float>
+     */
     public function geometric(int|float $start, int|float $ratio, int $size): array
     {
         $current = $start;
@@ -26,6 +32,9 @@ class SequenceGenerator
         return $sequence;
     }
 
+    /**
+     * @return array<int, int>
+     */
     public function fibonacci(int $size): array
     {
         $sequence = [];
