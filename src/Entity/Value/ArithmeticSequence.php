@@ -8,11 +8,11 @@ use Symfony\Component\Validator\Constraints\Type;
 class ArithmeticSequence extends AbstractSequence
 {
     #[NotNull]
-    #[Type('numeric')]
+    #[Type(['int', 'float'])]
     protected mixed $start;
 
     #[NotNull]
-    #[Type('numeric')]
+    #[Type(['int', 'float'])]
     protected mixed $increment;
 
     public function getStart(): mixed

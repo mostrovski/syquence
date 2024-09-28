@@ -8,11 +8,11 @@ use Symfony\Component\Validator\Constraints\Type;
 class GeometricSequence extends AbstractSequence
 {
     #[NotNull]
-    #[Type('numeric')]
+    #[Type(['int', 'float'])]
     protected mixed $start;
 
     #[NotNull]
-    #[Type('numeric')]
+    #[Type(['int', 'float'])]
     protected mixed $ratio;
 
     public function getStart(): mixed
