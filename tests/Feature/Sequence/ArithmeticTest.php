@@ -15,7 +15,7 @@ class ArithmeticTest extends TestCase
      */
     public function test_it_expects_params(): void
     {
-        $this->http->request('GET', $this->resourceUri);
+        $this->http->request('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -29,24 +29,11 @@ class ArithmeticTest extends TestCase
 
     /**
      * @throws TransportExceptionInterface
-     */
-    public function test_it_expects_body_payload(): void
-    {
-        $this->http->request(
-            'GET',
-            $this->resourceUri.'?start=1&increment=1&size=5',
-        );
-
-        self::assertResponseIsUnprocessable();
-    }
-
-    /**
-     * @throws TransportExceptionInterface
      * @throws \JsonException
      */
     public function test_it_expects_size_to_be_integer(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'increment' => 1,
             'size' => '5',
@@ -66,7 +53,7 @@ class ArithmeticTest extends TestCase
      */
     public function test_it_expects_start_to_be_integer_or_float(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => '1',
             'increment' => 1,
             'size' => 5,
@@ -86,7 +73,7 @@ class ArithmeticTest extends TestCase
      */
     public function test_it_expects_increment_to_be_integer_or_float(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'increment' => '1',
             'size' => 5,
@@ -106,7 +93,7 @@ class ArithmeticTest extends TestCase
      */
     public function test_successful_response(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 2,
             'increment' => -0.25,
             'size' => 5,

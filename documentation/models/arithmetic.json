@@ -1,0 +1,24 @@
+{
+  "title": "Arithmetic progression",
+  "type": "object",
+  "examples": [
+    {
+      "data": [
+          1,
+          2,
+          3,
+          4,
+          5
+      ]
+    }
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array"
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

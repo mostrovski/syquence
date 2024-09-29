@@ -15,7 +15,7 @@ class FibonacciTest extends TestCase
      */
     public function test_it_expects_params(): void
     {
-        $this->http->request('GET', $this->resourceUri);
+        $this->http->request('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -27,24 +27,11 @@ class FibonacciTest extends TestCase
 
     /**
      * @throws TransportExceptionInterface
-     */
-    public function test_it_expects_body_payload(): void
-    {
-        $this->http->request(
-            'GET',
-            $this->resourceUri.'?size=15',
-        );
-
-        self::assertResponseIsUnprocessable();
-    }
-
-    /**
-     * @throws TransportExceptionInterface
      * @throws \JsonException
      */
     public function test_it_expects_size_to_be_integer(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'size' => '5',
         ]]);
 
@@ -62,7 +49,7 @@ class FibonacciTest extends TestCase
      */
     public function test_successful_response(): void
     {
-        $this->http->request('GET', $this->resourceUri, ['json' => [
+        $this->http->request('POST', $this->resourceUri, ['json' => [
             'size' => 15,
         ]]);
 

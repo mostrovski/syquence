@@ -1,0 +1,78 @@
+{
+  "title": "Sequences",
+  "type": "object",
+  "examples": [
+    {
+      "data": {
+        "arithmetic": {
+          "id": "arithmetic",
+          "title": "Arithmetic progression"
+        },
+        "geometric": {
+          "id": "geometric",
+          "title": "Geometric progression"
+        },
+        "fibonacci": {
+          "id": "fibonacci",
+          "title": "Fibonacci sequence"
+        }
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "arithmetic": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title"
+          ]
+        },
+        "geometric": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title"
+          ]
+        },
+        "fibonacci": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

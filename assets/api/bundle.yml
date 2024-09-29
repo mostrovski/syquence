@@ -1,0 +1,321 @@
+openapi: 3.1.0
+info:
+  title: Syquence API
+  version: '1.0'
+  description: Documentation for the Syquence API - a Symfony math sequence generator.
+  contact:
+    name: Andrei Ostrovskii
+    email: ostrovskiime@gmail.com
+    url: https://ostrovskii.me
+servers:
+  - url: https://syquence.ddev.site/api
+    description: Local
+paths:
+  /sequences:
+    get:
+      summary: Get all supported sequences
+      operationId: sequences-get
+      description: |
+        Returns the normalised collection of all currently supported sequences.
+      responses:
+        '200':
+          description: Returns the current high-score of the user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sequences'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /sequences/arithmetic:
+    post:
+      summary: Generate the arithmetic progression
+      operationId: sequences-arithmetic-get
+      description: |
+        Returns the arithmetic progression based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/arithmetic'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: number
+                  description: int or float
+                increment:
+                  type: number
+                  description: int or float
+                size:
+                  type: integer
+              required:
+                - start
+                - increment
+                - size
+            examples:
+              example:
+                value:
+                  start: 1
+                  increment: 1
+                  size: 5
+  /sequences/geometric:
+    post:
+      summary: Generate the geometric progression
+      operationId: sequences-geometric-get
+      description: |
+        Returns the geometric progression based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/geometric'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: number
+                  description: int or float
+                ratio:
+                  type: number
+                  description: int or float
+                size:
+                  type: integer
+              required:
+                - start
+                - ratio
+                - size
+            examples:
+              example:
+                value:
+                  start: 1
+                  ratio: 2
+                  size: 5
+  /sequences/fibonacci:
+    post:
+      summary: Generate the Fibonacci sequence
+      operationId: sequences-fibonacci-get
+      description: |
+        Returns the Fibonacci sequence based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/fibonacci'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                size:
+                  type: integer
+              required:
+                - size
+            examples:
+              example:
+                value:
+                  size: 10
+components:
+  responses:
+    '400':
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Bad request.
+    '405':
+      description: Method not allowed.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Method not allowed.
+    '422':
+      description: Invalid request (e.g. validation errors).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                description: Validation errors
+            required:
+              - error
+          examples:
+            example:
+              value:
+                error:
+                  size:
+                    - This value should be of type int.
+    '500':
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Internal server error.
+  schemas:
+    sequences:
+      title: Sequences
+      type: object
+      examples:
+        - data:
+            arithmetic:
+              id: arithmetic
+              title: Arithmetic progression
+            geometric:
+              id: geometric
+              title: Geometric progression
+            fibonacci:
+              id: fibonacci
+              title: Fibonacci sequence
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          properties:
+            arithmetic:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+              required:
+                - id
+                - title
+            geometric:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+              required:
+                - id
+                - title
+            fibonacci:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+              required:
+                - id
+                - title
+      required:
+        - data
+    arithmetic:
+      title: Arithmetic progression
+      type: object
+      examples:
+        - data:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+      required:
+        - data
+    geometric:
+      title: Geometric progression
+      type: object
+      examples:
+        - data:
+            - 1
+            - 2
+            - 4
+            - 8
+            - 16
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+      required:
+        - data
+    fibonacci:
+      title: Fibonacci sequence
+      type: object
+      examples:
+        - data:
+            - 0
+            - 1
+            - 1
+            - 2
+            - 3
+            - 5
+            - 8
+            - 13
+            - 21
+            - 34
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+      required:
+        - data

@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  title: Syquence API
+  version: '1.0'
+  description: Documentation for the Syquence API - a Symfony math sequence generator.
+  contact:
+    name: Andrei Ostrovskii
+    email: 'ostrovskiime@gmail.com'
+    url: 'https://ostrovskii.me'
+servers:
+  - url: 'https://syquence.ddev.site/api'
+    description: Local
+paths:
+  /sequences:
+    get:
+      summary: Get all supported sequences
+      operationId: sequences-get
+      description: |
+        Returns the normalised collection of all currently supported sequences.
+      responses:
+        '200':
+          description: Returns the current high-score of the user.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/sequences.json'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /sequences/arithmetic:
+    post:
+      summary: Generate the arithmetic progression
+      operationId: sequences-arithmetic-get
+      description: |
+        Returns the arithmetic progression based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/arithmetic.json'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: number
+                  description: int or float
+                increment:
+                  type: number
+                  description: int or float
+                size:
+                  type: integer
+              required:
+                - start
+                - increment
+                - size
+            examples:
+              example:
+                value:
+                  start: 1
+                  increment: 1
+                  size: 5
+  /sequences/geometric:
+    post:
+      summary: Generate the geometric progression
+      operationId: sequences-geometric-get
+      description: |
+        Returns the geometric progression based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/geometric.json'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start:
+                  type: number
+                  description: int or float
+                ratio:
+                  type: number
+                  description: int or float
+                size:
+                  type: integer
+              required:
+                - start
+                - ratio
+                - size
+            examples:
+              example:
+                value:
+                  start: 1
+                  ratio: 2
+                  size: 5
+  /sequences/fibonacci:
+    post:
+      summary: Generate the Fibonacci sequence
+      operationId: sequences-fibonacci-get
+      description: |
+        Returns the Fibonacci sequence based on provided parameters.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/fibonacci.json'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                size:
+                  type: integer
+              required:
+                - size
+            examples:
+              example:
+                value:
+                  size: 10
+components:
+  responses:
+    '400':
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Bad request.
+    '405':
+      description: Method not allowed.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Method not allowed.
+    '422':
+      description: Invalid request (e.g. validation errors).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                description: Validation errors
+            required:
+              - error
+          examples:
+            example:
+              value:
+                error:
+                  size:
+                    - This value should be of type int.
+    '500':
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+          examples:
+            example:
+              value:
+                detail: Internal server error.

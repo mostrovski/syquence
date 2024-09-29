@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block meta %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% endblock %}
+
+{% block title %}Syquence API{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    <elements-api
+        apiDescriptionUrl="{{ asset('api/bundle.yml') }}"
+        router="hash"
+        layout="sidebar"
+        hideInternal="true" />
+{% endblock %}

@@ -28,8 +28,8 @@ class SequenceController extends AbstractApiController
         return $this->json(['data' => $data]);
     }
 
-    #[Route('/{id}', name: 'show', methods: 'GET')]
-    public function show(string $id, Request $request, SequenceGenerator $generate): JsonResponse
+    #[Route('/{id}', name: 'show', methods: 'POST')]
+    public function generate(string $id, Request $request, SequenceGenerator $generate): JsonResponse
     {
         try {
             $sequence = Sequence::from($id);
