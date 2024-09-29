@@ -2,10 +2,10 @@
 
 namespace App\Entity\Enumeration;
 
-use App\Entity\Value\AbstractSequence;
-use App\Entity\Value\ArithmeticSequence;
-use App\Entity\Value\FibonacciSequence;
-use App\Entity\Value\GeometricSequence;
+use App\Entity\Data\AbstractSequence;
+use App\Entity\Data\ArithmeticSequence;
+use App\Entity\Data\FibonacciSequence;
+use App\Entity\Data\GeometricSequence;
 use Symfony\Component\HttpFoundation\InputBag;
 
 enum Sequence: string
@@ -32,7 +32,7 @@ enum Sequence: string
         };
     }
 
-    public function mapData(InputBag $payload): AbstractSequence
+    public function mapParams(InputBag $payload): AbstractSequence
     {
         return match ($this) {
             self::Arithmetic => (new ArithmeticSequence)

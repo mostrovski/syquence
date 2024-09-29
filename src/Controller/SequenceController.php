@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Enumeration\Sequence;
-use App\Service\SequenceGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +28,7 @@ class SequenceController extends AbstractApiController
     }
 
     #[Route('/{id}', name: 'show', methods: 'POST')]
-    public function generate(string $id, Request $request, SequenceGenerator $generate): JsonResponse
+    public function generate(string $id, Request $request): JsonResponse
     {
         try {
             $sequence = Sequence::from($id);
@@ -40,8 +39,8 @@ class SequenceController extends AbstractApiController
             );
         }
 
-        $payload = $request->getPayload();
-        $errors = $this->validator->validate($sequence->mapData($payload));
+        $instance = $sequence->mapParams($request->getPayload());
+        $errors = $this->validator->validate($instance);
 
         if (count($errors) > 0) {
             return $this->json(
@@ -50,20 +49,6 @@ class SequenceController extends AbstractApiController
             );
         }
 
-        return $this->json([
-            'data' => match ($sequence) {
-                Sequence::Arithmetic => $generate->arithmetic(
-                    (float) $payload->get('start'),
-                    (float) $payload->get('increment'),
-                    (int) $payload->get('size'),
-                ),
-                Sequence::Geometric => $generate->geometric(
-                    (float) $payload->get('start'),
-                    (float) $payload->get('ratio'),
-                    (int) $payload->get('size'),
-                ),
-                Sequence::Fibonacci => $generate->fibonacci((int) $payload->get('size')),
-            },
-        ]);
+        return $this->json(['data' => $instance->generate()]);
     }
 }

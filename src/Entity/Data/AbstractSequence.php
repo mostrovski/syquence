@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Entity\Value;
+namespace App\Entity\Data;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
@@ -22,4 +22,6 @@ abstract class AbstractSequence
 
         return $this;
     }
+
+    abstract public function generate(): array;
 }

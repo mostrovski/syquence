@@ -6,16 +6,18 @@
 {% block title %}Syquence API{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
 {% endblock %}
 
 {% block body %}
     <elements-api
-        apiDescriptionUrl="{{ asset('api/bundle.yml') }}"
+        apiDescriptionUrl="{{ asset('bundle.yml') }}"
         router="hash"
         layout="sidebar"
         hideInternal="true" />
