@@ -11,10 +11,10 @@ final class FibonacciSequenceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sequence = new FibonacciSequence;
+        $this->sequence = new FibonacciSequence();
     }
 
-    public function test_it_generates(): void
+    public function testItGenerates(): void
     {
         $this->assertEquals([], $this->sequence->setSize(-1)->generate());
         $this->assertEquals([], $this->sequence->setSize(0)->generate());

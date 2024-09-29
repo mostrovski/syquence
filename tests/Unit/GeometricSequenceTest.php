@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Tests\Unit;
 
@@ -11,10 +13,10 @@ final class GeometricSequenceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sequence = new GeometricSequence;
+        $this->sequence = new GeometricSequence();
     }
 
-    public function test_it_generates(): void
+    public function testItGenerates(): void
     {
         $this->assertEquals([], $this->sequence->setStart(1)->setRatio(1)->setSize(-1)->generate());
         $this->assertEquals([], $this->sequence->setStart(1)->setRatio(1)->setSize(0)->generate());

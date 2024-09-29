@@ -35,15 +35,15 @@ enum Sequence: string
     public function mapParams(InputBag $payload): AbstractSequence
     {
         return match ($this) {
-            self::Arithmetic => (new ArithmeticSequence)
+            self::Arithmetic => (new ArithmeticSequence())
                 ->setStart($payload->get('start'))
                 ->setIncrement($payload->get('increment'))
                 ->setSize($payload->get('size')),
-            self::Geometric => (new GeometricSequence)
+            self::Geometric => (new GeometricSequence())
                 ->setStart($payload->get('start'))
                 ->setRatio($payload->get('ratio'))
                 ->setSize($payload->get('size')),
-            self::Fibonacci => (new FibonacciSequence)
+            self::Fibonacci => (new FibonacciSequence())
                 ->setSize($payload->get('size')),
         };
     }

@@ -13,13 +13,13 @@ final class FibonacciTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_params(): void
+    public function testItExpectsParams(): void
     {
         $this->http->request('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'size' => 'This value should not be null.',
             ],
         ]);
@@ -29,7 +29,7 @@ final class FibonacciTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_size_to_be_integer(): void
+    public function testItExpectsSizeToBeInteger(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'size' => '5',
@@ -37,7 +37,7 @@ final class FibonacciTest extends TestCase
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'size' => 'This value should be of type int.',
             ],
         ]);
@@ -47,15 +47,15 @@ final class FibonacciTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_successful_response(): void
+    public function testSuccessfulResponse(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'size' => 15,
         ]]);
 
         self::assertResponseIsSuccessful();
-        self::assertJsonEquals(['data'=> [
-            0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
+        self::assertJsonEquals(['data' => [
+            0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377,
         ]]);
     }
 }

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Entity\Data;
 
@@ -30,7 +30,7 @@ class GeometricSequence extends AbstractSequence
         $ratio = (float) $this->getRatio();
         $sequence = [];
 
-        for ($i = 0; $i < $size; $i++) {
+        for ($i = 0; $i < $size; ++$i) {
             $sequence[] = $current;
             $current *= $ratio;
         }

@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Entity\Data;
 
@@ -12,7 +12,7 @@ class FibonacciSequence extends AbstractSequence
         $sequence = [];
         $size = (int) $this->getSize();
 
-        for ($i = 0; $i < $size; $i++) {
+        for ($i = 0; $i < $size; ++$i) {
             $sequence[] = match ($i) {
                 0 => 0,
                 1 => 1,

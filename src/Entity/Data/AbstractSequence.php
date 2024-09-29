@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Entity\Data;
 
@@ -23,5 +23,8 @@ abstract class AbstractSequence
         return $this;
     }
 
+    /**
+     * @return array<int, int|float>
+     */
     abstract public function generate(): array;
 }

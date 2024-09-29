@@ -11,10 +11,10 @@ final class ArithmeticSequenceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->sequence = new ArithmeticSequence;
+        $this->sequence = new ArithmeticSequence();
     }
 
-    public function test_it_generates(): void
+    public function testItGenerates(): void
     {
         $this->assertEquals([], $this->sequence->setStart(1)->setIncrement(1)->setSize(-1)->generate());
         $this->assertEquals([], $this->sequence->setStart(1)->setIncrement(1)->setSize(0)->generate());

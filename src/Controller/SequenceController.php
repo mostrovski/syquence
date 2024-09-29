@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Throwable;
 
 #[Route('api/sequences', name: 'api_sequences_')]
 class SequenceController extends AbstractApiController
@@ -32,7 +31,7 @@ class SequenceController extends AbstractApiController
     {
         try {
             $sequence = Sequence::from($id);
-        } catch (Throwable) {
+        } catch (\Throwable) {
             return $this->json(
                 ['error' => 'Sequence not found.'],
                 status: Response::HTTP_NOT_FOUND,

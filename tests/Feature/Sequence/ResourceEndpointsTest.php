@@ -13,7 +13,7 @@ final class ResourceEndpointsTest extends TestCase
     /**
      * @throws TransportExceptionInterface
      */
-    public function test_index_exists(): void
+    public function testIndexExists(): void
     {
         $this->http->request('GET', $this->resourceUri);
 
@@ -23,7 +23,7 @@ final class ResourceEndpointsTest extends TestCase
     /**
      * @throws TransportExceptionInterface
      */
-    public function test_generate_endpoint_exists_for_known_sequences(): void
+    public function testGenerateEndpointExistsForKnownSequences(): void
     {
         foreach (Sequence::cases() as $sequence) {
             $response = $this->http->request('POST', $this->resourceUri.'/'.$sequence->getId());
@@ -36,7 +36,7 @@ final class ResourceEndpointsTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_returns_not_fond_for_unknown_sequences(): void
+    public function testItReturnsNotFondForUnknownSequences(): void
     {
         $this->http->request('POST', $this->resourceUri.'/unknown-sequence-type');
 
@@ -47,14 +47,14 @@ final class ResourceEndpointsTest extends TestCase
     /**
      * @throws TransportExceptionInterface
      */
-    public function test_bad_requests(): void
+    public function testBadRequests(): void
     {
         foreach (Sequence::cases() as $sequence) {
             $this->http->request(
                 'POST',
                 $this->resourceUri.'/'.$sequence->getId(),
                 ['json' => ['size' => [15]],
-            ]);
+                ]);
 
             self::assertResponseStatusCodeSame(400);
         }
@@ -63,7 +63,7 @@ final class ResourceEndpointsTest extends TestCase
     /**
      * @throws TransportExceptionInterface
      */
-    public function test_wrong_method_requests(): void
+    public function testWrongMethodRequests(): void
     {
         foreach (['POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as $method) {
             $this->http->request($method, $this->resourceUri);
@@ -73,11 +73,10 @@ final class ResourceEndpointsTest extends TestCase
 
         foreach (Sequence::cases() as $sequence) {
             foreach (['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as $method) {
-                $this->http->request($method, $this->resourceUri . '/' . $sequence->getId());
+                $this->http->request($method, $this->resourceUri.'/'.$sequence->getId());
 
                 self::assertResponseStatusCodeSame(405);
             }
-
         }
     }
 }

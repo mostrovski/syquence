@@ -13,7 +13,7 @@ final class IndexTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_successful_response(): void
+    public function testSuccessfulResponse(): void
     {
         $this->http->request('GET', $this->resourceUri);
 

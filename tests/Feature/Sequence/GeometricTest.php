@@ -13,13 +13,13 @@ final class GeometricTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_params(): void
+    public function testItExpectsParams(): void
     {
         $this->http->request('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'start' => 'This value should not be null.',
                 'ratio' => 'This value should not be null.',
                 'size' => 'This value should not be null.',
@@ -31,7 +31,7 @@ final class GeometricTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_size_to_be_integer(): void
+    public function testItExpectsSizeToBeInteger(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 1,
@@ -41,7 +41,7 @@ final class GeometricTest extends TestCase
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'size' => 'This value should be of type int.',
             ],
         ]);
@@ -51,7 +51,7 @@ final class GeometricTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_start_to_be_integer_or_float(): void
+    public function testItExpectsStartToBeIntegerOrFloat(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => '1',
@@ -61,7 +61,7 @@ final class GeometricTest extends TestCase
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'start' => 'This value should be of type int|float.',
             ],
         ]);
@@ -71,7 +71,7 @@ final class GeometricTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_it_expects_ratio_to_be_integer_or_float(): void
+    public function testItExpectsRatioToBeIntegerOrFloat(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 1,
@@ -81,7 +81,7 @@ final class GeometricTest extends TestCase
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
-            'error'=> [
+            'error' => [
                 'ratio' => 'This value should be of type int|float.',
             ],
         ]);
@@ -91,7 +91,7 @@ final class GeometricTest extends TestCase
      * @throws TransportExceptionInterface
      * @throws \JsonException
      */
-    public function test_successful_response(): void
+    public function testSuccessfulResponse(): void
     {
         $this->http->request('POST', $this->resourceUri, ['json' => [
             'start' => 10,
@@ -100,6 +100,6 @@ final class GeometricTest extends TestCase
         ]]);
 
         self::assertResponseIsSuccessful();
-        self::assertJsonEquals(['data'=> [10, -5, 2.5, -1.25, 0.625]]);
+        self::assertJsonEquals(['data' => [10, -5, 2.5, -1.25, 0.625]]);
     }
 }
