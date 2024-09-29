@@ -5,7 +5,7 @@ namespace App\Tests\Feature\Sequence;
 use App\Tests\Feature\TestCase;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class IndexTest extends TestCase
+final class IndexTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences';
 

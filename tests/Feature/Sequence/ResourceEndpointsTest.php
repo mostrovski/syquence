@@ -6,7 +6,7 @@ use App\Entity\Enumeration\Sequence;
 use App\Tests\Feature\TestCase;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class ResourceEndpointsTest extends TestCase
+final class ResourceEndpointsTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences';
 

@@ -5,7 +5,7 @@ namespace App\Tests\Feature\Sequence;
 use App\Tests\Feature\TestCase;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class GeometricTest extends TestCase
+final class GeometricTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences/geometric';
 
