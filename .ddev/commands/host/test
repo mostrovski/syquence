@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Alias for ddev exec phpunit
+## Usage: test
+## Example: ddev test
+
+ddev exec phpunit

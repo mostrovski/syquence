@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Alias for ddev exec grumphp run
+## Usage: lint
+## Example: ddev lint
+
+ddev exec grumphp run

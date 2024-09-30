@@ -1,0 +1,7 @@
+#!/bin/bash
+
+## Description: Alias for ddev exec console
+## Usage: console
+## Example: ddev console
+
+ddev exec console $1
