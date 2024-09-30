@@ -1,0 +1,28 @@
+grumphp:
+    git_hook_variables:
+        EXEC_GRUMPHP_COMMAND: 'ddev exec '
+    hooks_dir: ~
+    hooks_preset: local
+    stop_on_failure: false
+    ignore_unstaged_changes: false
+    hide_circumvention_tip: false
+    process_timeout: 180
+    environment:
+        paths:
+            - ./vendor/bin
+    ascii:
+        failed: failed.txt
+        succeeded: succeeded.txt
+    parallel:
+        enabled: false
+        max_workers: 32
+    fixer:
+        enabled: true
+        fix_by_default: true
+    tasks:
+        composer: ~
+        phpcsfixer:
+            config: '.php-cs-fixer.dist.php'
+        phpstan:
+            configuration: 'phpstan.dist.neon'
+            use_grumphp_paths: false
