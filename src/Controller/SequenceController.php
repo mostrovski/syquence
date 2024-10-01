@@ -17,8 +17,9 @@ class SequenceController extends AbstractApiController
         $data = [];
 
         foreach (Sequence::cases() as $sequence) {
-            $data[$sequence->value] = [
-                'id' => $sequence->getId(),
+            $id = $sequence->getId();
+            $data[$id] = [
+                'id' => $id,
                 'title' => $sequence->getTitle(),
             ];
         }
