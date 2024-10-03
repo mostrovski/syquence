@@ -179,6 +179,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      description: Check out README to learn how to generate the token for testing purposes.
   responses:
     '400':
       description: Bad request.

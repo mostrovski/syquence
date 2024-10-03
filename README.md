@@ -54,6 +54,11 @@ The API returns the corresponding sequence as an array.
 
 1. Head over to the https://syquence.ddev.site in your browser and examine the API documentation.
 2. You can send API requests directly from the documentation UI.
+3. To generate the token, run the following command:
+   ```bash
+   ddev console syquence:token
+   ```
+4. Paste the output of the command into the "Token" input in the documentation UI before sending a request.
 
 ### Useful commands
 
