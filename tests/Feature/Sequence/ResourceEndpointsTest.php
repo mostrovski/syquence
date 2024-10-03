@@ -4,6 +4,10 @@ namespace App\Tests\Feature\Sequence;
 
 use App\Entity\Enumeration\Sequence;
 use App\Tests\Feature\TestCase;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class ResourceEndpointsTest extends TestCase
@@ -57,6 +61,36 @@ final class ResourceEndpointsTest extends TestCase
                 ]);
 
             self::assertResponseStatusCodeSame(400);
+        }
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     */
+    public function testUnauthorizedRequests(): void
+    {
+        $this->http->request('GET', $this->resourceUri);
+        self::assertResponseStatusCodeSame(401);
+        self::assertJsonContains(['message' => 'JWT Token not found']);
+
+        $this->http->request('GET', $this->resourceUri, ['auth_bearer' => 'some-token']);
+        self::assertResponseStatusCodeSame(401);
+        self::assertJsonContains(['message' => 'Invalid JWT Token']);
+
+        foreach (Sequence::cases() as $sequence) {
+            $url = $this->resourceUri.'/'.$sequence->getId();
+
+            $this->http->request('POST', $url);
+            self::assertResponseStatusCodeSame(401);
+            self::assertJsonContains(['message' => 'JWT Token not found']);
+
+            $this->http->request('POST', $url, ['auth_bearer' => 'some-token']);
+            self::assertResponseStatusCodeSame(401);
+            self::assertJsonContains(['message' => 'Invalid JWT Token']);
         }
     }
 

@@ -4,4 +4,4 @@
 ## Usage: test
 ## Example: ddev test
 
-ddev exec phpunit
+ddev exec phpunit $1
