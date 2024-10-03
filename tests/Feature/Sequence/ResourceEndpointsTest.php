@@ -15,7 +15,7 @@ final class ResourceEndpointsTest extends TestCase
      */
     public function testIndexExists(): void
     {
-        $this->http->request('GET', $this->resourceUri);
+        $this->authorizedRequest('GET', $this->resourceUri);
 
         self::assertResponseIsSuccessful();
     }
@@ -26,7 +26,7 @@ final class ResourceEndpointsTest extends TestCase
     public function testGenerateEndpointExistsForKnownSequences(): void
     {
         foreach (Sequence::cases() as $sequence) {
-            $response = $this->http->request('POST', $this->resourceUri.'/'.$sequence->getId());
+            $response = $this->authorizedRequest('POST', $this->resourceUri.'/'.$sequence->getId());
 
             self::assertNotEquals(404, $response->getStatusCode());
         }
@@ -38,7 +38,7 @@ final class ResourceEndpointsTest extends TestCase
      */
     public function testItReturnsNotFondForUnknownSequences(): void
     {
-        $this->http->request('POST', $this->resourceUri.'/unknown-sequence-type');
+        $this->authorizedRequest('POST', $this->resourceUri.'/unknown-sequence-type');
 
         self::assertResponseStatusCodeSame(404);
         self::assertJsonEquals(['error' => 'Sequence not found.']);
@@ -50,7 +50,7 @@ final class ResourceEndpointsTest extends TestCase
     public function testBadRequests(): void
     {
         foreach (Sequence::cases() as $sequence) {
-            $this->http->request(
+            $this->authorizedRequest(
                 'POST',
                 $this->resourceUri.'/'.$sequence->getId(),
                 ['json' => ['size' => [15]],
@@ -66,14 +66,14 @@ final class ResourceEndpointsTest extends TestCase
     public function testWrongMethodRequests(): void
     {
         foreach (['POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as $method) {
-            $this->http->request($method, $this->resourceUri);
+            $this->authorizedRequest($method, $this->resourceUri);
 
             self::assertResponseStatusCodeSame(405);
         }
 
         foreach (Sequence::cases() as $sequence) {
             foreach (['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as $method) {
-                $this->http->request($method, $this->resourceUri.'/'.$sequence->getId());
+                $this->authorizedRequest($method, $this->resourceUri.'/'.$sequence->getId());
 
                 self::assertResponseStatusCodeSame(405);
             }

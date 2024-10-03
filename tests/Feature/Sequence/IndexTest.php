@@ -15,7 +15,7 @@ final class IndexTest extends TestCase
      */
     public function testSuccessfulResponse(): void
     {
-        $this->http->request('GET', $this->resourceUri);
+        $this->authorizedRequest('GET', $this->resourceUri);
 
         self::assertJsonEquals([
             'data' => [

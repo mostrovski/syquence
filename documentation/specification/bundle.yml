@@ -10,6 +10,8 @@ info:
 servers:
   - url: https://syquence.ddev.site/api
     description: Local
+security:
+  - bearerAuth: []
 paths:
   /sequences:
     get:
@@ -26,14 +28,18 @@ paths:
                 $ref: '#/components/schemas/sequences'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
+      tags:
+        - Sequences
   /sequences/arithmetic:
     post:
       summary: Generate the arithmetic progression
-      operationId: sequences-arithmetic-get
+      operationId: sequences-arithmetic-generate
       description: |
         Returns the arithmetic progression based on provided parameters.
       responses:
@@ -45,6 +51,8 @@ paths:
                 $ref: '#/components/schemas/arithmetic'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -75,10 +83,12 @@ paths:
                   start: 1
                   increment: 1
                   size: 5
+      tags:
+        - Sequences
   /sequences/geometric:
     post:
       summary: Generate the geometric progression
-      operationId: sequences-geometric-get
+      operationId: sequences-geometric-generate
       description: |
         Returns the geometric progression based on provided parameters.
       responses:
@@ -90,6 +100,8 @@ paths:
                 $ref: '#/components/schemas/geometric'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -120,10 +132,12 @@ paths:
                   start: 1
                   ratio: 2
                   size: 5
+      tags:
+        - Sequences
   /sequences/fibonacci:
     post:
       summary: Generate the Fibonacci sequence
-      operationId: sequences-fibonacci-get
+      operationId: sequences-fibonacci-generate
       description: |
         Returns the Fibonacci sequence based on provided parameters.
       responses:
@@ -135,6 +149,8 @@ paths:
                 $ref: '#/components/schemas/fibonacci'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -155,7 +171,14 @@ paths:
               example:
                 value:
                   size: 10
+      tags:
+        - Sequences
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   responses:
     '400':
       description: Bad request.
@@ -170,6 +193,19 @@ components:
             example:
               value:
                 detail: Bad request.
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          examples:
+            example:
+              value:
+                message: Invalid JWT Token.
     '405':
       description: Method not allowed.
       content:
