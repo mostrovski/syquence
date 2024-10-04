@@ -61,8 +61,8 @@ jobs:
         with:
           name: dependencies
 
-      - name: Check contents
-        run: ls -hals
+      - name: Unpack dependencies
+        run: tar -xf dependencies.tar
 
       - name: Run PHPStan
         run: ls -hals && vendor/bin/phpstan --error-format=github
