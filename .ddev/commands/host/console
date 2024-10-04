@@ -4,4 +4,4 @@
 ## Usage: console
 ## Example: ddev console
 
-ddev exec console $1
+ddev exec console $@

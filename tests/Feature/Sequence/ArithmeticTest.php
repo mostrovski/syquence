@@ -15,7 +15,7 @@ final class ArithmeticTest extends TestCase
      */
     public function testItExpectsParams(): void
     {
-        $this->http->request('POST', $this->resourceUri);
+        $this->authorizedRequest('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -33,7 +33,7 @@ final class ArithmeticTest extends TestCase
      */
     public function testItExpectsSizeToBeInteger(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'increment' => 1,
             'size' => '5',
@@ -53,7 +53,7 @@ final class ArithmeticTest extends TestCase
      */
     public function testItExpectsStartToBeIntegerOrFloat(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => '1',
             'increment' => 1,
             'size' => 5,
@@ -73,7 +73,7 @@ final class ArithmeticTest extends TestCase
      */
     public function testItExpectsIncrementToBeIntegerOrFloat(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'increment' => '1',
             'size' => 5,
@@ -93,13 +93,14 @@ final class ArithmeticTest extends TestCase
      */
     public function testSuccessfulResponse(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 2,
             'increment' => -0.25,
             'size' => 5,
         ]]);
 
         self::assertResponseIsSuccessful();
+        self::assertMatchesJsonSchema($this->getSchema('arithmetic.json'));
         self::assertJsonEquals(['data' => [2, 1.75, 1.5, 1.25, 1]]);
     }
 }

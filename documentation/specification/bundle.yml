@@ -11,12 +11,66 @@ servers:
   - url: https://syquence.ddev.site/api
     description: Local
 paths:
+  /auth:
+    post:
+      summary: Authenticate
+      operationId: auth-token
+      description: |
+        Returns the JWT token to be used in requests to endpoints requiring authorization.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/token'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example:
+                  value:
+                    message: Invalid credentials.
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+            examples:
+              example:
+                value:
+                  username: chuck
+                  password: norris
+      tags:
+        - Authentication
   /sequences:
     get:
       summary: Get all supported sequences
       operationId: sequences-get
       description: |
         Returns the normalised collection of all currently supported sequences.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns the current high-score of the user.
@@ -26,16 +80,22 @@ paths:
                 $ref: '#/components/schemas/sequences'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
+      tags:
+        - Sequences
   /sequences/arithmetic:
     post:
       summary: Generate the arithmetic progression
-      operationId: sequences-arithmetic-get
+      operationId: sequences-arithmetic-generate
       description: |
         Returns the arithmetic progression based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -45,6 +105,8 @@ paths:
                 $ref: '#/components/schemas/arithmetic'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -75,12 +137,16 @@ paths:
                   start: 1
                   increment: 1
                   size: 5
+      tags:
+        - Sequences
   /sequences/geometric:
     post:
       summary: Generate the geometric progression
-      operationId: sequences-geometric-get
+      operationId: sequences-geometric-generate
       description: |
         Returns the geometric progression based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -90,6 +156,8 @@ paths:
                 $ref: '#/components/schemas/geometric'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -120,12 +188,16 @@ paths:
                   start: 1
                   ratio: 2
                   size: 5
+      tags:
+        - Sequences
   /sequences/fibonacci:
     post:
       summary: Generate the Fibonacci sequence
-      operationId: sequences-fibonacci-get
+      operationId: sequences-fibonacci-generate
       description: |
         Returns the Fibonacci sequence based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -135,6 +207,8 @@ paths:
                 $ref: '#/components/schemas/fibonacci'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
         '405':
           $ref: '#/components/responses/405'
         '422':
@@ -155,7 +229,17 @@ paths:
               example:
                 value:
                   size: 10
+      tags:
+        - Sequences
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Go to [Authenticate](auth-token) and send the request or check 
+        out README to learn how to generate the token for testing purposes.
   responses:
     '400':
       description: Bad request.
@@ -170,6 +254,19 @@ components:
             example:
               value:
                 detail: Bad request.
+    '401':
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          examples:
+            example:
+              value:
+                message: Invalid JWT Token.
     '405':
       description: Method not allowed.
       content:
@@ -215,6 +312,17 @@ components:
               value:
                 detail: Internal server error.
   schemas:
+    token:
+      title: Authentication token
+      type: object
+      examples:
+        - token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjgwMzA4NjYsImV4cCI6MTcyODAzNDQ2Niwicm9sZXMiOlsiUk9MRV9BUElfVVNFUiJdLCJ1c2VybmFtZSI6ImNodWNrIn0.pg4Xxemv6rfjdWnhdwl-Nf5wvZDnitoAqSnJbYiGlZmmr1cyqL8qouGdg5mEOyWgU_MzwYclFkjKSBWjxaXgfJG22_u8lrcZ7behq9wqNcN_40aypB1RS-7zdu3RiJFhGwISggEEYegAGguY9VwFlfCWjJUHD7XUtZdRCajbhraGMXLr2x0V12XT6ZemaySgPt-6nU4_-YNi_P2kGjog1G8z1QvSSE5712gxELHZYbcPkI4ZyHCBU4md-HOt5yOf5zy9_4JdyFgig4X-qBwcbowa6S6RAtPKqNcXMA5JH4a61iGpOqAOMq99I82v1plHnvenZE_KQmgCNDDV_ffnLQ
+      additionalProperties: false
+      properties:
+        token:
+          type: string
+      required:
+        - token
     sequences:
       title: Sequences
       type: object

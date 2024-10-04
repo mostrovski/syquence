@@ -4,4 +4,4 @@
 ## Usage: lint
 ## Example: ddev lint
 
-ddev exec grumphp run
+ddev exec grumphp run $@

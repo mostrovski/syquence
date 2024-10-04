@@ -38,6 +38,7 @@ The API returns the corresponding sequence as an array.
 - Unit and feature tests with [PHPUnit](https://phpunit.de).
 - Opinionated code formatting & linting with [PHP CS Fixer](https://cs.symfony.com/) & [PHPStan](https://phpstan.org/), orchestrated by lovely [GrumPHP](https://github.com/phpro/grumphp).
 - API documentation powered by [Stoplight Elements](https://stoplight.io/open-source/elements).
+- [JWT](https://jwt.io) authorization.
 
 ### Installation
 
@@ -54,6 +55,13 @@ The API returns the corresponding sequence as an array.
 
 1. Head over to the https://syquence.ddev.site in your browser and examine the API documentation.
 2. You can send API requests directly from the documentation UI.
+3. To generate the token, send the request to the *auth* endpoint **or** run the following command:
+   ```bash
+   ddev console syquence:token
+   ```
+4. Paste the obtained token (e.g. the output of the above-mentioned command) into the "Token" input in the documentation UI 
+   before sending requests to endpoints requiring authorization.
+
 
 ### Useful commands
 

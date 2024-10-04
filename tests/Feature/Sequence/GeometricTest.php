@@ -15,7 +15,7 @@ final class GeometricTest extends TestCase
      */
     public function testItExpectsParams(): void
     {
-        $this->http->request('POST', $this->resourceUri);
+        $this->authorizedRequest('POST', $this->resourceUri);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -33,7 +33,7 @@ final class GeometricTest extends TestCase
      */
     public function testItExpectsSizeToBeInteger(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'ratio' => 1,
             'size' => '5',
@@ -53,7 +53,7 @@ final class GeometricTest extends TestCase
      */
     public function testItExpectsStartToBeIntegerOrFloat(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => '1',
             'ratio' => 1,
             'size' => 5,
@@ -73,7 +73,7 @@ final class GeometricTest extends TestCase
      */
     public function testItExpectsRatioToBeIntegerOrFloat(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 1,
             'ratio' => '1',
             'size' => 5,
@@ -93,13 +93,14 @@ final class GeometricTest extends TestCase
      */
     public function testSuccessfulResponse(): void
     {
-        $this->http->request('POST', $this->resourceUri, ['json' => [
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
             'start' => 10,
             'ratio' => -0.5,
             'size' => 5,
         ]]);
 
         self::assertResponseIsSuccessful();
+        self::assertMatchesJsonSchema($this->getSchema('geometric.json'));
         self::assertJsonEquals(['data' => [10, -5, 2.5, -1.25, 0.625]]);
     }
 }

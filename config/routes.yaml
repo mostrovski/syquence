@@ -11,6 +11,10 @@ api:
         path: '/'
         permanent: true
 
+auth:
+    path: /api/auth
+    methods: ['POST']
+
 controllers:
     resource:
         path: ../src/Controller/
