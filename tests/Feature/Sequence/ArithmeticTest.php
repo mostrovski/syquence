@@ -100,6 +100,7 @@ final class ArithmeticTest extends TestCase
         ]]);
 
         self::assertResponseIsSuccessful();
+        self::assertMatchesJsonSchema($this->getSchema('arithmetic.json'));
         self::assertJsonEquals(['data' => [2, 1.75, 1.5, 1.25, 1]]);
     }
 }

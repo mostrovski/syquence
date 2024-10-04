@@ -17,6 +17,8 @@ final class IndexTest extends TestCase
     {
         $this->authorizedRequest('GET', $this->resourceUri);
 
+        self::assertMatchesJsonSchema($this->getSchema('sequences.json'));
+
         self::assertJsonEquals([
             'data' => [
                 'arithmetic' => [

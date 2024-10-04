@@ -4,12 +4,15 @@ namespace App\Tests\Feature;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+
+use function Symfony\Component\String\u;
 
 abstract class TestCase extends ApiTestCase
 {
@@ -59,5 +62,16 @@ abstract class TestCase extends ApiTestCase
         $withToken = array_merge($options, ['auth_bearer' => $this->token]);
 
         return $this->http->request($method, $url, $withToken);
+    }
+
+    protected function getSchema(string $fileName): string
+    {
+        return (new Filesystem())->readFile(
+            u($fileName)
+                ->trimPrefix('/')
+                ->trimPrefix('documentation/models')
+                ->prepend('documentation/models/')
+                ->toString()
+        );
     }
 }

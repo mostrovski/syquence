@@ -100,6 +100,7 @@ final class GeometricTest extends TestCase
         ]]);
 
         self::assertResponseIsSuccessful();
+        self::assertMatchesJsonSchema($this->getSchema('geometric.json'));
         self::assertJsonEquals(['data' => [10, -5, 2.5, -1.25, 0.625]]);
     }
 }

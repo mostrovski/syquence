@@ -26,6 +26,19 @@ paths:
                 $ref: '../models/token.json'
         '400':
           $ref: '#/components/responses/400'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                example:
+                  value:
+                    message: Invalid credentials.
         '405':
           $ref: '#/components/responses/405'
         '500':
