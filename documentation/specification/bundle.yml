@@ -388,6 +388,8 @@ components:
       properties:
         data:
           type: array
+          items:
+            type: number
       required:
         - data
     geometric:
@@ -404,6 +406,8 @@ components:
       properties:
         data:
           type: array
+          items:
+            type: number
       required:
         - data
     fibonacci:
@@ -425,5 +429,7 @@ components:
       properties:
         data:
           type: array
+          items:
+            type: number
       required:
         - data
