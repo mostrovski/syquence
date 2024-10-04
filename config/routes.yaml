@@ -12,8 +12,8 @@ api:
         permanent: true
 
 auth:
-    path: /auth
-    methods: [ 'POST' ]
+    path: /api/auth
+    methods: POST
 
 controllers:
     resource:

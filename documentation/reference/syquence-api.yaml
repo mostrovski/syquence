@@ -10,15 +10,54 @@ info:
 servers:
   - url: 'https://syquence.ddev.site/api'
     description: Local
-security:
-    - bearerAuth: []
 paths:
+  /auth:
+    post:
+      summary: Authenticate
+      operationId: auth-token
+      description: |
+        Returns the JWT token to be used in requests to endpoints requiring authorization.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '../models/token.json'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+            examples:
+              example:
+                value:
+                  username: chuck
+                  password: norris
+      tags:
+        - Authentication
   /sequences:
     get:
       summary: Get all supported sequences
       operationId: sequences-get
       description: |
         Returns the normalised collection of all currently supported sequences.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns the current high-score of the user.
@@ -42,6 +81,8 @@ paths:
       operationId: sequences-arithmetic-generate
       description: |
         Returns the arithmetic progression based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -91,6 +132,8 @@ paths:
       operationId: sequences-geometric-generate
       description: |
         Returns the geometric progression based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -140,6 +183,8 @@ paths:
       operationId: sequences-fibonacci-generate
       description: |
         Returns the Fibonacci sequence based on provided parameters.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Success.
@@ -179,7 +224,9 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Check out README to learn how to generate the token for testing purposes.
+      description: |
+        Go to [Authenticate](auth-token) and send the request or check 
+        out README to learn how to generate the token for testing purposes.
   responses:
     '400':
       description: Bad request.

@@ -41,7 +41,7 @@ abstract class TestCase extends ApiTestCase
      */
     protected function retrieveToken(): string
     {
-        $response = $this->http->request('POST', '/auth', ['json' => [
+        $response = $this->http->request('POST', '/api/auth', ['json' => [
             'username' => 'chuck',
             'password' => 'norris',
         ]]);

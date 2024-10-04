@@ -16,6 +16,7 @@ corepack_enable: false
 hooks:
     post-start:
         - composer: install
+        - exec: console lexik:jwt:generate-keypair --skip-if-exists
 
 # Key features of DDEV's config.yaml:
 
