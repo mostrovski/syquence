@@ -82,6 +82,9 @@ jobs:
     name: Test PHP${{ matrix.php }} - ${{ matrix.os }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Load dependencies
         uses: actions/download-artifact@v4
         with:
