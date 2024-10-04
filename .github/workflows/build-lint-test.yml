@@ -1,0 +1,100 @@
+name: Build, lint, test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-24.04]
+        php: [8.3]
+
+    name: Build PHP${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Setup problem matchers
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Pack dependencies
+        run: tar -cvf dependencies.tar vendor
+
+      - name: Store dependencies
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencies
+          path: dependencies.tar
+          retention-days: 5
+
+  lint:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-24.04 ]
+        php: [ 8.3 ]
+
+    name: Lint PHP${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Load dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies
+
+      - name: Unpack dependencies
+        run: tar -xf dependencies.tar
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan --error-format=github
+
+      - name: Run PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  test:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-24.04 ]
+        php: [ 8.3 ]
+
+    name: Test PHP${{ matrix.php }} - ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Load dependencies
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies
+
+      - name: Unpack dependencies
+        run: tar -xf dependencies.tar
+
+      - name: Generate JWT keys
+        run: bin/console lexik:jwt:generate-keypair --skip-if-exists
+
+      - name: Execute tests
+        run: vendor/bin/phpunit
