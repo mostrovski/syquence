@@ -3,7 +3,7 @@
 ## A demo project showcasing basic API setup with Symfony.
 
 - PHP 8.3
-- Symfony 7.1
+- Symfony 7.4
 
 ### Minimum requirements
 
@@ -14,7 +14,7 @@ Create a Symfony-App with a REST-API to fetch the sequence for different progres
 Bonus
 -   Fibonacci
 
-The client states, for example, the start, increment or ratio, and the size of the sequence. 
+The client states, for example, the start, increment or ratio, and the size of the sequence.
 Examples:
 
 - Arithmetic: 1,2,3,4,5
@@ -59,7 +59,7 @@ The API returns the corresponding sequence as an array.
    ```bash
    ddev console syquence:token
    ```
-4. Paste the obtained token (e.g. the output of the above-mentioned command) into the "Token" input in the documentation UI 
+4. Paste the obtained token (e.g. the output of the above-mentioned command) into the "Token" input in the documentation UI
    before sending requests to endpoints requiring authorization.
 
 
