@@ -28,6 +28,7 @@ abstract class TestCase extends ApiTestCase
      */
     protected function setUp(): void
     {
+        static::$alwaysBootKernel = true;
         $this->http = static::createClient();
 
         if (empty($this->token)) {

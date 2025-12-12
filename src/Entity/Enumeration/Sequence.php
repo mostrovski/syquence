@@ -32,6 +32,9 @@ enum Sequence: string
         };
     }
 
+    /**
+     * @param InputBag<string|int|float|bool|null> $payload
+     */
     public function mapParams(InputBag $payload): AbstractSequence
     {
         return match ($this) {
