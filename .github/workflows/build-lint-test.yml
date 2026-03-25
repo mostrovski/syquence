@@ -32,13 +32,13 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Pack dependencies
-        run: tar -cvf ${{ matrix.php }}${{ matrix.php }}dependencies.tar vendor
+        run: tar -cvf ${{ matrix.php }}dependencies.tar vendor
 
       - name: Store dependencies
         uses: actions/upload-artifact@v4
         with:
-          name: dependencies
-          path: ${{ matrix.php }}${{ matrix.php }}dependencies.tar
+          name: ${{ matrix.php }}dependencies
+          path: ${{ matrix.php }}dependencies.tar
           retention-days: 5
 
   lint:
@@ -47,8 +47,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ ubuntu-24.04 ]
-        php: [ 8.3 ]
+        os: [ubuntu-24.04]
+        php: [8.3, 8.5]
 
     name: Lint PHP${{ matrix.php }} - ${{ matrix.os }}
 
@@ -59,7 +59,7 @@ jobs:
       - name: Load dependencies
         uses: actions/download-artifact@v4
         with:
-          name: dependencies
+          name: ${{ matrix.php }}dependencies
 
       - name: Unpack dependencies
         run: tar -xf ${{ matrix.php }}dependencies.tar
@@ -76,8 +76,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ ubuntu-24.04 ]
-        php: [ 8.3 ]
+        os: [ubuntu-24.04]
+        php: [8.3, 8.5]
 
     name: Test PHP${{ matrix.php }} - ${{ matrix.os }}
 
@@ -88,7 +88,7 @@ jobs:
       - name: Load dependencies
         uses: actions/download-artifact@v4
         with:
-          name: dependencies
+          name: ${{ matrix.php }}dependencies
 
       - name: Unpack dependencies
         run: tar -xf ${{ matrix.php }}dependencies.tar
