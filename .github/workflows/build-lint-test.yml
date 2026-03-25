@@ -32,13 +32,13 @@ jobs:
         run: composer install --prefer-dist --no-interaction
 
       - name: Pack dependencies
-        run: tar -cvf dependencies.tar vendor
+        run: tar -cvf ${{ matrix.php }}${{ matrix.php }}dependencies.tar vendor
 
       - name: Store dependencies
         uses: actions/upload-artifact@v4
         with:
           name: dependencies
-          path: dependencies.tar
+          path: ${{ matrix.php }}${{ matrix.php }}dependencies.tar
           retention-days: 5
 
   lint:
@@ -62,7 +62,7 @@ jobs:
           name: dependencies
 
       - name: Unpack dependencies
-        run: tar -xf dependencies.tar
+        run: tar -xf ${{ matrix.php }}dependencies.tar
 
       - name: Run PHPStan
         run: vendor/bin/phpstan --error-format=github
@@ -91,7 +91,7 @@ jobs:
           name: dependencies
 
       - name: Unpack dependencies
-        run: tar -xf dependencies.tar
+        run: tar -xf ${{ matrix.php }}dependencies.tar
 
       - name: Generate JWT keys
         run: bin/console lexik:jwt:generate-keypair --skip-if-exists
