@@ -2,9 +2,12 @@
 
 namespace App\Tests\Unit;
 
-use App\Entity\Data\FibonacciSequence;
+use App\Entity\FibonacciSequence;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group fibonacci-sequence
+ */
 final class FibonacciSequenceTest extends TestCase
 {
     protected FibonacciSequence $sequence;

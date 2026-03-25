@@ -2,7 +2,7 @@
 
 namespace App\Tests\Feature\Sequence;
 
-use App\Entity\Enumeration\Sequence;
+use App\Enum\SequenceType;
 use App\Tests\Feature\TestCase;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -29,7 +29,7 @@ final class ResourceEndpointsTest extends TestCase
      */
     public function testGenerateEndpointExistsForKnownSequences(): void
     {
-        foreach (Sequence::cases() as $sequence) {
+        foreach (SequenceType::cases() as $sequence) {
             $response = $this->authorizedRequest('POST', $this->resourceUri.'/'.$sequence->getId());
 
             self::assertNotEquals(404, $response->getStatusCode());
@@ -53,7 +53,7 @@ final class ResourceEndpointsTest extends TestCase
      */
     public function testBadRequests(): void
     {
-        foreach (Sequence::cases() as $sequence) {
+        foreach (SequenceType::cases() as $sequence) {
             $this->authorizedRequest(
                 'POST',
                 $this->resourceUri.'/'.$sequence->getId(),
@@ -81,7 +81,7 @@ final class ResourceEndpointsTest extends TestCase
         self::assertResponseStatusCodeSame(401);
         self::assertJsonContains(['message' => 'Invalid JWT Token']);
 
-        foreach (Sequence::cases() as $sequence) {
+        foreach (SequenceType::cases() as $sequence) {
             $url = $this->resourceUri.'/'.$sequence->getId();
 
             $this->http->request('POST', $url);
@@ -105,7 +105,7 @@ final class ResourceEndpointsTest extends TestCase
             self::assertResponseStatusCodeSame(405);
         }
 
-        foreach (Sequence::cases() as $sequence) {
+        foreach (SequenceType::cases() as $sequence) {
             foreach (['GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as $method) {
                 $this->authorizedRequest($method, $this->resourceUri.'/'.$sequence->getId());
 

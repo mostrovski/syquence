@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Enumeration\Sequence;
+use App\Dto\SequenceParametersDto;
+use App\Enum\SequenceType;
+use App\Service\SequenceFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('api/sequences', name: 'api_sequences_')]
 class SequenceController extends AbstractApiController
@@ -16,7 +19,7 @@ class SequenceController extends AbstractApiController
     {
         $data = [];
 
-        foreach (Sequence::cases() as $sequence) {
+        foreach (SequenceType::cases() as $sequence) {
             $id = $sequence->getId();
             $data[$id] = [
                 'id' => $id,
@@ -28,10 +31,14 @@ class SequenceController extends AbstractApiController
     }
 
     #[Route('/{id}', name: 'generate', methods: 'POST')]
-    public function generate(string $id, Request $request): JsonResponse
-    {
+    public function generate(
+        string $id,
+        Request $request,
+        SerializerInterface $serializer,
+        SequenceFactory $factory,
+    ): JsonResponse {
         try {
-            $sequence = Sequence::from($id);
+            $sequenceType = SequenceType::from($id);
         } catch (\Throwable) {
             return $this->json(
                 ['error' => 'Sequence not found.'],
@@ -39,8 +46,17 @@ class SequenceController extends AbstractApiController
             );
         }
 
-        $instance = $sequence->mapParams($request->getPayload());
-        $errors = $this->validator->validate($instance);
+        try {
+            $parameters = $serializer->deserialize($request->getContent(), SequenceParametersDto::class, 'json');
+        } catch (\Throwable) {
+            return $this->json(
+                ['error' => 'Invalid parameters.'],
+                status: Response::HTTP_BAD_REQUEST,
+            );
+        }
+
+        $sequence = $factory->create($sequenceType, $parameters);
+        $errors = $this->validator->validate($sequence);
 
         if (count($errors) > 0) {
             return $this->json(
@@ -49,6 +65,6 @@ class SequenceController extends AbstractApiController
             );
         }
 
-        return $this->json(['data' => $instance->generate()]);
+        return $this->json(['data' => $sequence->generate()]);
     }
 }

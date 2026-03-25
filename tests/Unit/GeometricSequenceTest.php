@@ -2,9 +2,12 @@
 
 namespace App\Tests\Unit;
 
-use App\Entity\Data\GeometricSequence;
+use App\Entity\GeometricSequence;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group geometric-sequence
+ */
 final class GeometricSequenceTest extends TestCase
 {
     protected GeometricSequence $sequence;

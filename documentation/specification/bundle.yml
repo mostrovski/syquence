@@ -248,12 +248,12 @@ components:
           schema:
             type: object
             properties:
-              detail:
+              error:
                 type: string
           examples:
             example:
               value:
-                detail: Bad request.
+                error: Invalid parameters.
     '401':
       description: Unauthorized.
       content:

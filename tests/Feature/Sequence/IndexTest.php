@@ -3,15 +3,13 @@
 namespace App\Tests\Feature\Sequence;
 
 use App\Tests\Feature\TestCase;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 final class IndexTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences';
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testSuccessfulResponse(): void
     {

@@ -2,18 +2,12 @@
 
 namespace App\Tests\Feature;
 
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-
 final class AuthTest extends TestCase
 {
     protected string $resourceUri = '/api/auth';
 
     /**
-     * @throws TransportExceptionInterface
+     * @throws \Throwable
      */
     public function testBadRequests(): void
     {
@@ -37,11 +31,7 @@ final class AuthTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
+     * @throws \Throwable
      */
     public function testInvalidCredentials(): void
     {
@@ -55,7 +45,7 @@ final class AuthTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @throws \Throwable
      */
     public function testWrongMethodRequests(): void
     {
@@ -67,7 +57,7 @@ final class AuthTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
+     * @throws \Throwable
      */
     public function testSuccessfulResponse(): void
     {

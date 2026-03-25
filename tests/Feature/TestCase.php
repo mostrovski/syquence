@@ -5,11 +5,6 @@ namespace App\Tests\Feature;
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use ApiPlatform\Symfony\Bundle\Test\Client;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 use function Symfony\Component\String\u;
@@ -20,11 +15,7 @@ abstract class TestCase extends ApiTestCase
     protected string $token = '';
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
+     * @throws \Throwable
      */
     protected function setUp(): void
     {
@@ -37,11 +28,7 @@ abstract class TestCase extends ApiTestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
+     * @throws \Throwable
      */
     protected function retrieveToken(): string
     {
@@ -56,7 +43,7 @@ abstract class TestCase extends ApiTestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @throws TransportExceptionInterface
+     * @throws \Throwable
      */
     protected function authorizedRequest(string $method, string $url, array $options = []): ResponseInterface
     {

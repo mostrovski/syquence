@@ -3,19 +3,32 @@
 namespace App\Tests\Feature\Sequence;
 
 use App\Tests\Feature\TestCase;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group arithmetic-sequence
+ */
 final class ArithmeticTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences/arithmetic';
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testItExpectsParams(): void
     {
         $this->authorizedRequest('POST', $this->resourceUri);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        self::assertJsonEquals(['error' => 'Invalid parameters.']);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function testItRejectsNullableParams(): void
+    {
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => []]);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -28,8 +41,28 @@ final class ArithmeticTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
+     */
+    public function testItRejectsNullParams(): void
+    {
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
+            'start' => null,
+            'increment' => null,
+            'size' => null,
+        ]]);
+
+        self::assertResponseIsUnprocessable();
+        self::assertJsonEquals([
+            'error' => [
+                'start' => 'This value should not be null.',
+                'increment' => 'This value should not be null.',
+                'size' => 'This value should not be null.',
+            ],
+        ]);
+    }
+
+    /**
+     * @throws \Throwable
      */
     public function testItExpectsSizeToBeInteger(): void
     {
@@ -48,8 +81,7 @@ final class ArithmeticTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testItExpectsStartToBeIntegerOrFloat(): void
     {
@@ -68,8 +100,7 @@ final class ArithmeticTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testItExpectsIncrementToBeIntegerOrFloat(): void
     {
@@ -88,8 +119,7 @@ final class ArithmeticTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testSuccessfulResponse(): void
     {

@@ -2,9 +2,12 @@
 
 namespace App\Tests\Unit;
 
-use App\Entity\Data\ArithmeticSequence;
+use App\Entity\ArithmeticSequence;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group arithmetic-sequence
+ */
 final class ArithmeticSequenceTest extends TestCase
 {
     protected ArithmeticSequence $sequence;

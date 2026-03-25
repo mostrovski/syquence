@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\Data;
+namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
-abstract class AbstractSequence
+abstract class AbstractSequence implements Sequence
 {
-    #[Type('int')]
     #[NotNull]
+    #[Type('int')]
     protected mixed $size = null;
 
     public function getSize(): mixed

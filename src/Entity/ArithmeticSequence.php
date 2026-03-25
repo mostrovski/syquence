@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Entity\Data;
+namespace App\Entity;
 
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;

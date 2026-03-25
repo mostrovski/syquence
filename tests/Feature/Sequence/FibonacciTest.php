@@ -3,19 +3,32 @@
 namespace App\Tests\Feature\Sequence;
 
 use App\Tests\Feature\TestCase;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group fibonacci-sequence
+ */
 final class FibonacciTest extends TestCase
 {
     protected string $resourceUri = '/api/sequences/fibonacci';
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testItExpectsParams(): void
     {
         $this->authorizedRequest('POST', $this->resourceUri);
+
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        self::assertJsonEquals(['error' => 'Invalid parameters.']);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function testItRejectsNullableParams(): void
+    {
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => []]);
 
         self::assertResponseIsUnprocessable();
         self::assertJsonEquals([
@@ -26,8 +39,24 @@ final class FibonacciTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
+     */
+    public function testItRejectsNullParams(): void
+    {
+        $this->authorizedRequest('POST', $this->resourceUri, ['json' => [
+            'size' => null,
+        ]]);
+
+        self::assertResponseIsUnprocessable();
+        self::assertJsonEquals([
+            'error' => [
+                'size' => 'This value should not be null.',
+            ],
+        ]);
+    }
+
+    /**
+     * @throws \Throwable
      */
     public function testItExpectsSizeToBeInteger(): void
     {
@@ -44,8 +73,7 @@ final class FibonacciTest extends TestCase
     }
 
     /**
-     * @throws TransportExceptionInterface
-     * @throws \JsonException
+     * @throws \Throwable
      */
     public function testSuccessfulResponse(): void
     {
