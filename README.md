@@ -2,7 +2,7 @@
 
 ## A demo project showcasing basic API setup with Symfony.
 
-- PHP 8.3
+- PHP 8.5
 - Symfony 7.4
 
 ### Minimum requirements
