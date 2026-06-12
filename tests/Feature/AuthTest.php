@@ -13,14 +13,14 @@ final class AuthTest extends TestCase
     {
         $requestBodies = [
             [],
-            ['username' => ''],
-            ['username' => 'some-username'],
-            ['password' => ''],
-            ['password' => 'some-password'],
-            ['username' => '', 'password' => ''],
+            ['username' => 1],
+            ['username' => null],
+            ['password' => 2],
+            ['password' => null],
             ['username' => 1, 'password' => 2],
-            ['username' => 'some-username', 'password' => ''],
-            ['username' => '', 'password' => 'some-password'],
+            ['username' => null, 'password' => null],
+            ['username' => 'some-username', 'password' => 2],
+            ['username' => null, 'password' => 'some-password'],
         ];
 
         foreach ($requestBodies as $requestBody) {
